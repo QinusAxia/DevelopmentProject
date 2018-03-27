@@ -51,6 +51,11 @@ function component(width, height, color, x, y, type) {
             this.y,
             this.width, this.height);
         }
+		else if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        }
         else 
         {
           ctx.fillStyle = color;
