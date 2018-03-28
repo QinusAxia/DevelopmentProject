@@ -6,7 +6,7 @@ var mySound2;
 var myScore;
 
 function startGame() {
-    myGamePiece = new component(35, 35, "plane1.png", 10, 120, "image");
+    myGamePiece = new component(45, 35, "plane1.png", 10, 120, "image");
     myGamePiece.gravity = 1;
     myScore = new component("30px", "Consolas", "black", 280, 40, "text");
 	mySound = new sound("explosion.mp3");
