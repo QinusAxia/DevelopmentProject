@@ -2,6 +2,7 @@ var myGamePiece;
 var myObstacles = [];
 var mySound;
 var mySound1;
+var mySound2;
 var myScore;
 
 function startGame() {
