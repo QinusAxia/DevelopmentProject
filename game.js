@@ -1,19 +1,25 @@
 var myGamePiece;
 var myObstacles = [];
+var mySound;
+var mySound1;
 var myScore;
-
 
 function startGame() {
     myGamePiece = new component(35, 35, "plane1.png", 10, 120, "image");
     myGamePiece.gravity = 1;
     myScore = new component("30px", "Consolas", "black", 280, 40, "text");
-
+	mySound = new sound("explosion.mp3");
+	mySound1 = new sound("BGM.mp3");
+	mySound2 = new sound("Accelerate.mp3");
     myGameArea.start();
+	
 }
 
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
+		mySound1.play();
+		
         this.canvas.width = 640;
         this.canvas.height = 480;
         this.context = this.canvas.getContext("2d");
@@ -21,6 +27,9 @@ var myGameArea = {
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
         },
+		stop : function() {
+        clearInterval(this.interval);
+    }, 
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
@@ -63,6 +72,7 @@ function component(width, height, color, x, y, type) {
         }
       }
     this.newPos = function() {
+		
         this.gravitySpeed += this.gravity;
         this.x += this.speedX;
         this.y += this.speedY + this.gravitySpeed;
@@ -104,6 +114,8 @@ function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
+			mySound.play();
+            myGameArea.stop();
             return;
         } 
     }
@@ -130,6 +142,22 @@ function updateGameArea() {
     myGamePiece.update();
 }
 
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }    
+	
+}
+
 function everyinterval(n) {
     if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
     return false;
@@ -137,4 +165,5 @@ function everyinterval(n) {
 
 function accelerate(n) {
     myGamePiece.gravity = n;
+	mySound2.play();
 }
