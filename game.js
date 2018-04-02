@@ -27,6 +27,22 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
+		window.addEventListener('mousedown', function (e) {
+            myGameArea.x = e.pageX;
+            myGameArea.y = e.pageY;
+        })
+        window.addEventListener('mouseup', function (e) {
+            myGameArea.x = e.pageX;
+            myGameArea.y = e.pageY;
+        })
+        window.addEventListener('touchstart', function (e) {
+            myGameArea.x = e.pageX;
+            myGameArea.y = e.pageY;
+        })
+        window.addEventListener('touchend', function (e) {
+            myGameArea.x = e.pageX;
+            myGameArea.y = e.pageY;
+        })
         },
 		stop : function() {
         clearInterval(this.interval);
@@ -41,7 +57,7 @@ function component(width, height, color, x, y, type) {
     if (type == "image")
     {
         this.image = new Image();
-        this.image.src = "plane1.png";
+        this.image.src = color;
     }
     this.score = 0;
     this.width = width;
@@ -109,6 +125,17 @@ function component(width, height, color, x, y, type) {
         }
         return crash;
     }
+	this.clicked = function() {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var clicked = true;
+        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+            clicked = false;
+        }
+        return clicked;
+    }
 }
 
 function updateGameArea() {
@@ -121,6 +148,15 @@ function updateGameArea() {
         } 
     }
     myGameArea.clear();
+	if (myGameArea.x && myGameArea.y) {
+        if (myGamePiece.clicked()) {
+            accelerate(-0.2);
+        }
+		else
+		{
+			accelerate(0.05);
+		}
+	}
     myGameArea.frameNo += 1;
     if (myGameArea.frameNo == 1 || everyinterval(150)) {
         x = myGameArea.canvas.width;
