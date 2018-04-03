@@ -1,5 +1,6 @@
 var myGamePiece;
 var myObstacles = [];
+var myBackground;
 var mySound;
 var mySound1;
 var mySound2;
@@ -7,8 +8,9 @@ var myScore;
 
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 120, "image");
-    myGamePiece.gravity = 1;
-    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+	myBackground = new component(640, 480, "images/bground1.jpg", 0, 0, "image"); 
+    myGamePiece.speed = 1;
+    myScore = new component("30px", "Consolas, sans serif", "black", 280, 40, "text");
 	mySound = new sound("sounds/explosion.mp3");
 	mySound1 = new sound("sounds/BGM.mp3");
 	mySound2 = new sound("sounds/Accelerate.mp3");
@@ -32,16 +34,16 @@ var myGameArea = {
             myGameArea.y = e.pageY;
         })
         window.addEventListener('mouseup', function (e) {
-            myGameArea.x = e.pageX;
-            myGameArea.y = e.pageY;
+            myGameArea.x = false;
+            myGameArea.y = false;
         })
         window.addEventListener('touchstart', function (e) {
             myGameArea.x = e.pageX;
             myGameArea.y = e.pageY;
         })
         window.addEventListener('touchend', function (e) {
-            myGameArea.x = e.pageX;
-            myGameArea.y = e.pageY;
+            myGameArea.x = false;
+            myGameArea.y = false;
         })
         },
 		stop : function() {
@@ -66,7 +68,7 @@ function component(width, height, color, x, y, type) {
     this.speedY = 0;    
     this.x = x;
     this.y = y;
-    this.gravity = 0;
+	this.gravity = 1;
     this.gravitySpeed = 0;
     this.update = function() 
       {
@@ -89,8 +91,7 @@ function component(width, height, color, x, y, type) {
         }
       }
     this.newPos = function() {
-		
-        this.gravitySpeed += this.gravity;
+		this.gravitySpeed += this.gravity;
         this.x += this.speedX;
         this.y += this.speedY + this.gravitySpeed;
         this.hitBottom();
@@ -100,14 +101,13 @@ function component(width, height, color, x, y, type) {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
             this.y = rockbottom;
-            this.gravitySpeed = 0;
         }
+		this.gravitySpeed = -this.gravitySpeed;
     }
 	this.hitTop = function() {
         var rocktop = 0;
         if (this.y <= rocktop) {
             this.y = rocktop;
-            this.gravitySpeed = 0;
         }
     }
     this.crashWith = function(otherobj) {
@@ -150,14 +150,12 @@ function updateGameArea() {
     myGameArea.clear();
 	if (myGameArea.x && myGameArea.y) {
         if (myGamePiece.clicked()) {
-            accelerate(-0.2);
+            accelerate(-2);
         }
-		else
-		{
-			accelerate(0.05);
-		}
 	}
     myGameArea.frameNo += 1;
+	myBackground.newPos(); 
+    myBackground.update();
     if (myGameArea.frameNo == 1 || everyinterval(150)) {
         x = myGameArea.canvas.width;
         minHeight = 20;
@@ -201,6 +199,6 @@ function everyinterval(n) {
 }
 
 function accelerate(n) {
-    myGamePiece.gravity = n;
+    myGamePiece.y += n ;
 	mySound2.play();
 }

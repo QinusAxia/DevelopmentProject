@@ -17,8 +17,6 @@ article, aside, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin-left: auto;
-    margin-right: auto;
 	padding: 0;
 	border: 0;
 	font-size: 100%;
@@ -34,9 +32,7 @@ canvas {
     display: block;
     /*width: 800px;*/
     border: 1px solid #d3d3d3;
-	background:url(images/bground1.jpg);
 	/* source: https://wbd.deviantart.com/art/Anime-Style-Sky-Background-142106296; */
-	background-size:100% 100%;
 }
 
 
