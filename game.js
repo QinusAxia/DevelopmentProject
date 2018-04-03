@@ -7,7 +7,7 @@ var mySound2;
 var myScore;
 
 function startGame() {
-    myGamePiece = new component(45, 35, "images/plane1.png", 10, 120, "image");
+    myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
 	myBackground = new component(640, 480, "images/bground1.jpg", 0, 0, "image"); 
     myGamePiece.speed = 1;
     myScore = new component("30px", "Consolas, sans serif", "black", 280, 40, "text");
@@ -68,7 +68,7 @@ function component(width, height, color, x, y, type) {
     this.speedY = 0;    
     this.x = x;
     this.y = y;
-	this.gravity = 1;
+	this.gravity = 2;
     this.gravitySpeed = 0;
     this.update = function() 
       {
@@ -149,7 +149,7 @@ function updateGameArea() {
     }
     myGameArea.clear();
 	if (myGameArea.x && myGameArea.y) {
-        if (myGamePiece.clicked()) {
+        if (myBackground.clicked()) {
             accelerate(-2);
         }
 	}
