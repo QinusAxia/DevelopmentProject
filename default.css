@@ -30,12 +30,11 @@ time, mark, audio, video {
 /* Centering the canvas*/ 
 /* source: https://stackoverflow.com/questions/5127937/how-to-center-canvas-in-html5?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa*/
 canvas {
-    padding-left: 0;
-    padding-right: 0;
+    /*margin: 0 auto;*/
     display: block;
     /*width: 800px;*/
     border: 1px solid #d3d3d3;
-	background:url(bground1.jpg);
+	background:url(images/bground1.jpg);
 	/* source: https://wbd.deviantart.com/art/Anime-Style-Sky-Background-142106296; */
 	background-size:100% 100%;
 }
