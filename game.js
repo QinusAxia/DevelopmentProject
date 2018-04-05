@@ -144,13 +144,9 @@ function updateGameArea() {
         if (myGamePiece.crashWith(myObstacles[i])) {
 			mySound.play();
             myGameArea.stop();
-<<<<<<< HEAD
 			alert("GAME OVER");
             document.location.reload();
-=======
             mySound1.stop();
-            //location.reload();
->>>>>>> 3e6026dcbbcbe4005f805fdd60a96eb8017d0b4a
             return;
         } 
     }
