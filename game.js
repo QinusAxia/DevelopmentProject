@@ -142,11 +142,11 @@ function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
-			mySound.play();
             myGameArea.stop();
+			mySound.play();
+			mySound1.stop();
 			alert("GAME OVER");
             document.location.reload();
-            mySound1.stop();
             return;
         } 
     }
