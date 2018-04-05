@@ -68,7 +68,7 @@ function component(width, height, color, x, y, type) {
     this.speedY = 0;    
     this.x = x;
     this.y = y;
-	this.gravity = 2;
+	this.gravity = 5;
     this.gravitySpeed = 0;
     this.update = function() 
       {
@@ -144,15 +144,20 @@ function updateGameArea() {
         if (myGamePiece.crashWith(myObstacles[i])) {
 			mySound.play();
             myGameArea.stop();
+<<<<<<< HEAD
 			alert("GAME OVER");
             document.location.reload();
+=======
+            mySound1.stop();
+            //location.reload();
+>>>>>>> 3e6026dcbbcbe4005f805fdd60a96eb8017d0b4a
             return;
         } 
     }
     myGameArea.clear();
 	if (myGameArea.x && myGameArea.y) {
         if (myBackground.clicked()) {
-            accelerate(-2);
+            accelerate(-5);
         }
 	}
     myGameArea.frameNo += 1;
@@ -164,10 +169,10 @@ function updateGameArea() {
         maxHeight = 200;
         height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
         minGap = 78;
-        maxGap = 150;
+        maxGap = 200;
         gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-        myObstacles.push(new component(40, height, "green", x, 10));
-        myObstacles.push(new component(40, x - height - gap, "green", x, height + gap));
+        myObstacles.push(new component(40, height, "white", x, 0));
+        myObstacles.push(new component(40, x - height - gap, "white", x, height + gap));
     }
     for (i = 0; i < myObstacles.length; i += 1) {
         myObstacles[i].x += -1;
