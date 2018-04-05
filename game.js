@@ -144,6 +144,8 @@ function updateGameArea() {
         if (myGamePiece.crashWith(myObstacles[i])) {
 			mySound.play();
             myGameArea.stop();
+			alert("GAME OVER");
+            document.location.reload();
             return;
         } 
     }
