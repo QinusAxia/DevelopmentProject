@@ -6,16 +6,20 @@ var mySound1;
 var mySound2;
 var myScore;
 var myHighScore;
+var gameOver;
+var restart;
 
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
-	myBackground = new component(640, 480, "images/bground1.jpg", 0, 0, "image"); 
-    myGamePiece.speed = 1;
-    myScore = new component("30px", "Consolas, sans serif", "black", 280, 40, "text");
-	myHighScore = new component("30px", "Consolas, sans serif", "black", 280, 80, "text");
+	myBackground = new component(512, 512, "images/bground1.jpg", 0, 0, "image"); 
+    myGamePiece.gravity = 1;
+    myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
+	myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
 	mySound = new sound("sounds/explosion.mp3");
 	mySound1 = new sound("sounds/BGM.mp3");
 	mySound2 = new sound("sounds/Accelerate.mp3");
+	gameOver = new component("30px", "Consolas, sans serif", "red", 180, 80, "text");
+    restart = new component("30px", "Consolas, sans serif", "black", 100, 120, "text");
     myGameArea.start();
 	
 }
@@ -25,28 +29,12 @@ var myGameArea = {
     start : function() {
 		mySound1.play();
 		
-        this.canvas.width = 640;
-        this.canvas.height = 480;
+        this.canvas.width = 512;
+        this.canvas.height = 512;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
-		window.addEventListener('mousedown', function (e) {
-            myGameArea.x = e.pageX;
-            myGameArea.y = e.pageY;
-        })
-        window.addEventListener('mouseup', function (e) {
-            myGameArea.x = false;
-            myGameArea.y = false;
-        })
-        window.addEventListener('touchstart', function (e) {
-            myGameArea.x = e.pageX;
-            myGameArea.y = e.pageY;
-        })
-        window.addEventListener('touchend', function (e) {
-            myGameArea.x = false;
-            myGameArea.y = false;
-        })
         },
 		stop : function() {
         clearInterval(this.interval);
@@ -70,7 +58,7 @@ function component(width, height, color, x, y, type) {
     this.speedY = 0;    
     this.x = x;
     this.y = y;
-	this.gravity = 5;
+	this.gravity = 0;
     this.gravitySpeed = 0;
     this.update = function() 
       {
@@ -104,7 +92,7 @@ function component(width, height, color, x, y, type) {
         if (this.y > rockbottom) {
             this.y = rockbottom;
         }
-		this.gravitySpeed = -this.gravitySpeed;
+		this.gravitySpeed = 0;
     }
 	this.hitTop = function() {
         var rocktop = 0;
@@ -127,16 +115,13 @@ function component(width, height, color, x, y, type) {
         }
         return crash;
     }
-	this.clicked = function() {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var clicked = true;
-        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
-            clicked = false;
-        }
-        return clicked;
+}
+
+function myFunction(event) {
+    var x = event.which || event.keyCode;
+    
+    if (x == 114 || x == 82) {
+        location.reload();
     }
 }
 
@@ -148,17 +133,16 @@ function updateGameArea() {
             myGameArea.stop();
 			mySound.play();
 			mySound1.stop();
-			alert("GAME OVER");
-            document.location.reload();
+			myGameArea.clear();
+            gameOver.text = "GAME OVER";
+            restart.text = "PRESS 'R' TO RESTART";
+            restart.update();
+            gameOver.update();
+            myFunction(Event);
             return;
         } 
     }
     myGameArea.clear();
-	if (myGameArea.x && myGameArea.y) {
-        if (myBackground.clicked()) {
-            accelerate(-5);
-        }
-	}
     myGameArea.frameNo += 1;
 	myBackground.newPos(); 
     myBackground.update();
@@ -216,6 +200,6 @@ function everyinterval(n) {
 }
 
 function accelerate(n) {
-    myGamePiece.y += n ;
+    myGamePiece.gravity = n ;
 	mySound2.play();
 }

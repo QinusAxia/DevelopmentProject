@@ -2,11 +2,16 @@
 <html>
 
 <head>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src=""></script>
+	<link rel="stylesheet" href="default.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="default.css" />
+	<script src="game.js"></script>
 </head>
 
-<body onload="startGame()">
+<body onload="startGame()" class="text-center" onkeydown="accelerate(-2)" onkeyup="accelerate(2)" onkeypress="myFunction(event)" onmousedown="accelerate(-2)" onmouseup="accelerate(2)">
     <script src="game.js"></script>
     <br>
     <p>Click the aeroplane to stay in the air</p>
