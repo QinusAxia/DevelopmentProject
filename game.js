@@ -5,12 +5,14 @@ var mySound;
 var mySound1;
 var mySound2;
 var myScore;
+var myHighScore;
 
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
 	myBackground = new component(640, 480, "images/bground1.jpg", 0, 0, "image"); 
     myGamePiece.speed = 1;
     myScore = new component("30px", "Consolas, sans serif", "black", 280, 40, "text");
+	myHighScore = new component("30px", "Consolas, sans serif", "black", 280, 80, "text");
 	mySound = new sound("sounds/explosion.mp3");
 	mySound1 = new sound("sounds/BGM.mp3");
 	mySound2 = new sound("sounds/Accelerate.mp3");
@@ -140,6 +142,7 @@ function component(width, height, color, x, y, type) {
 
 function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+	var highscore = localStorage.getItem("highscore");
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
             myGameArea.stop();
@@ -176,6 +179,17 @@ function updateGameArea() {
     }
     myScore.text="SCORE: " + myGameArea.frameNo;
     myScore.update();
+	myHighScore.text = "HIGH SCORE: " + highscore;
+	// https://stackoverflow.com/questions/29370017/adding-a-high-score-to-local-storage
+	if(highscore != null){
+		if(myGameArea.frameNo > highscore){
+			localStorage.setItem("highscore", myGameArea.frameNo);
+		}
+	}
+	else{
+		localStorage.setItem("highscore", myGameArea.frameNo);
+	}
+	myHighScore.update();
     myGamePiece.newPos();
     myGamePiece.update();
 }
