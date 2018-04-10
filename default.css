@@ -1,5 +1,11 @@
 canvas {
-    margin-top: 25px;
+    margin: 0 auto;
+    padding: 0;
     border:1px solid #d3d3d3;
     background-color: #f1f1f1;
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
 }
