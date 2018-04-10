@@ -9,6 +9,10 @@ var myHighScore;
 var gameOver;
 var restart;
 
+/* To initalise the game component
+The speed of gamepiece is set to 1.
+The score gained is based on the gameframe.
+ */
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
 	myBackground = new component(512, 512, "images/bground1.jpg", 0, 0, "image"); 
@@ -24,6 +28,7 @@ function startGame() {
 	
 }
 
+/* This is to create the canvas of game. */
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
@@ -44,6 +49,7 @@ var myGameArea = {
     }
 }
 
+/* This function is used to create object.*/
 function component(width, height, color, x, y, type) {
     this.type = type;
     if (type == "image")
@@ -60,6 +66,7 @@ function component(width, height, color, x, y, type) {
     this.y = y;
 	this.gravity = 0;
     this.gravitySpeed = 0;
+     //This function is use to check whether the type of context is an image or text data type, else return a fillRect.
     this.update = function() 
       {
         ctx = myGameArea.context;
@@ -80,6 +87,7 @@ function component(width, height, color, x, y, type) {
           ctx.fillRect(this.x, this.y, this.width, this.height);
         }
       }
+      //This function sets default gravity speed to reach above or below for the object.
     this.newPos = function() {
 		this.gravitySpeed += this.gravity;
         this.x += this.speedX;
@@ -87,6 +95,7 @@ function component(width, height, color, x, y, type) {
         this.hitBottom();
 		this.hitTop();
     }
+    //To prevent plane fly below the canvas.
     this.hitBottom = function() {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
@@ -94,12 +103,14 @@ function component(width, height, color, x, y, type) {
         }
 		this.gravitySpeed = 0;
     }
+    //To prevent plane fly beyond the canvas.
 	this.hitTop = function() {
         var rocktop = 0;
         if (this.y <= rocktop) {
             this.y = rocktop;
         }
     }
+    //To return a crash when object touches the obstacles
     this.crashWith = function(otherobj) {
         var myleft = this.x;
         var myright = this.x + (this.width);
@@ -125,6 +136,7 @@ function myFunction(event) {
     }
 }
 
+//This function is used for updating the game area, when the user knocks obstacles it will trigger game over.
 function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
 	var highscore = localStorage.getItem("highscore");
@@ -146,6 +158,7 @@ function updateGameArea() {
     myGameArea.frameNo += 1;
 	myBackground.newPos(); 
     myBackground.update();
+    //This is to create obstacles and set the height and gap for the obstacles.
     if (myGameArea.frameNo == 1 || everyinterval(150)) {
         x = myGameArea.canvas.width;
         minHeight = 20;
@@ -161,10 +174,12 @@ function updateGameArea() {
         myObstacles[i].x += -2;
         myObstacles[i].update();
     }
+    //The score gained is based on the frameNo.
     myScore.text="SCORE: " + myGameArea.frameNo;
     myScore.update();
 	myHighScore.text = "HIGH SCORE: " + highscore;
 	// https://stackoverflow.com/questions/29370017/adding-a-high-score-to-local-storage
+    //After go through game over screen, the highscore will store the highest value and display in the canvas.
 	if(highscore != null){
 		if(myGameArea.frameNo > highscore){
 			localStorage.setItem("highscore", myGameArea.frameNo);
@@ -178,6 +193,7 @@ function updateGameArea() {
     myGamePiece.update();
 }
 
+//This function is to initialise the sound effect.
 function sound(src) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
