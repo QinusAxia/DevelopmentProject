@@ -8,6 +8,7 @@ var myScore;
 var myHighScore;
 var gameOver;
 var restart;
+var myMute;
 
 /* To initalise the game component
 The speed of gamepiece is set to 1.
@@ -16,7 +17,8 @@ The score gained is based on the gameframe.
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
     myBackground = new component(window.innerWidth - 10, window.innerHeight - 10, "images/bground1.jpg", 0, 0, "image");
-    myGamePiece.gravity = 1;
+    myMute = new component(35, 35, "images/mute.png", 0, 0, "image"); 
+	myGamePiece.gravity = 1;
     myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
     myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
     mySound = new sound("sounds/explosion.mp3");
@@ -40,6 +42,17 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 10);
+			
+		// window.addEventListener('mousedown', function (e) {
+            // myGameArea.x = e.pageX;
+            // myGameArea.y = e.pageY;
+        // }) 
+        		
+		// window.addEventListener('mouseup', function (e) {
+				// myGameArea.x = false;
+				// myGameArea.y = false;
+			// })
+	
     },
     stop: function () {
         clearInterval(this.interval);
@@ -47,6 +60,7 @@ var myGameArea = {
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+	
 }
 
 function resize() { //source: http://cssdeck.com/labs/emcxdwuz
@@ -136,6 +150,19 @@ function component(width, height, color, x, y, type) {
         }
         return crash;
     }
+	
+	 // this.clicked = function() {
+        // var myleft = this.x;
+        // var myright = this.x + (this.width);
+        // var mytop = this.y;
+        // var mybottom = this.y + (this.height);
+        // var clicked = true;
+        // if ((mybottom < myGameArea.y) || (mytop > myGameArea.y)
+         // || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+            // clicked = false;
+        // }
+        // return clicked;
+    // }
 }
 
 function myFunction(event) {
@@ -166,7 +193,6 @@ function updateGameArea() {
     }
     myGameArea.clear();
     myGameArea.frameNo += 1;
-    myBackground.newPos();
     myBackground.update();
     //This is to create obstacles and set the height and gap for the obstacles.
     if (myGameArea.frameNo == 1 || everyinterval(200)) {
@@ -184,8 +210,10 @@ function updateGameArea() {
         myObstacles[i].x += -2;
         myObstacles[i].update();
     }
+	
+	myMute.update();
+	
     //The score gained is based on the frameNo.
-
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
     myHighScore.text = "HIGH SCORE: " + highscore;
@@ -198,6 +226,9 @@ function updateGameArea() {
     } else {
         localStorage.setItem("highscore", myGameArea.frameNo);
     }
+	
+	
+
     myHighScore.update();
     myGamePiece.newPos();
     myGamePiece.update();
@@ -230,4 +261,9 @@ function everyinterval(n) {
 function accelerate(n) {
     myGamePiece.gravity = n;
     mySound2.play();
+}
+
+function mute(){
+	mySound1.stop();
+	
 }
