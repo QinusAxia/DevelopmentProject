@@ -9,6 +9,7 @@ var myHighScore;
 var gameOver;
 var restart;
 var myMute;
+var myUnmute;
 
 /* To initalise the game component
 The speed of gamepiece is set to 1.
@@ -18,6 +19,7 @@ function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
     myBackground = new component(window.innerWidth - 10, window.innerHeight - 10, "images/bground1.jpg", 0, 0, "image");
     myMute = new component(35, 35, "images/mute.png", 0, 0, "image"); 
+	myUnmute = new component(35, 35, "images/unmute.png", 40, 0, "image"); 
 	myGamePiece.gravity = 1;
     myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
     myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
@@ -43,15 +45,15 @@ var myGameArea = {
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 10);
 			
-		// window.addEventListener('mousedown', function (e) {
-            // myGameArea.x = e.pageX;
-            // myGameArea.y = e.pageY;
-        // }) 
+		window.addEventListener('mousedown', function (e) {
+            myGameArea.x = e.pageX;
+            myGameArea.y = e.pageY;
+        }) 
         		
-		// window.addEventListener('mouseup', function (e) {
-				// myGameArea.x = false;
-				// myGameArea.y = false;
-			// })
+		window.addEventListener('mouseup', function (e) {
+				myGameArea.x = false;
+				myGameArea.y = false;
+			})
 	
     },
     stop: function () {
@@ -151,18 +153,18 @@ function component(width, height, color, x, y, type) {
         return crash;
     }
 	
-	 // this.clicked = function() {
-        // var myleft = this.x;
-        // var myright = this.x + (this.width);
-        // var mytop = this.y;
-        // var mybottom = this.y + (this.height);
-        // var clicked = true;
-        // if ((mybottom < myGameArea.y) || (mytop > myGameArea.y)
-         // || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
-            // clicked = false;
-        // }
-        // return clicked;
-    // }
+	 this.clicked = function() {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var clicked = true;
+        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y)
+         || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+            clicked = false;
+        }
+        return clicked;
+    }
 }
 
 function myFunction(event) {
@@ -194,6 +196,14 @@ function updateGameArea() {
     myGameArea.clear();
     myGameArea.frameNo += 1;
     myBackground.update();
+	if (myGameArea.x && myGameArea.y) {
+		if(myMute.clicked()){
+			mySound1.stop();
+		}
+		if(myUnmute.clicked()){
+			mySound1.play();
+		}
+	}
     //This is to create obstacles and set the height and gap for the obstacles.
     if (myGameArea.frameNo == 1 || everyinterval(200)) {
         x = myGameArea.canvas.width;
@@ -212,7 +222,7 @@ function updateGameArea() {
     }
 	
 	myMute.update();
-	
+	myUnmute.update();
     //The score gained is based on the frameNo.
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
