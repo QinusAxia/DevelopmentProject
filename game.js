@@ -63,7 +63,10 @@ var myGameArea = {
         clearInterval(this.interval);
     },
     clear: function () {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		this.context.fillStyle = "white";
+		this.context.globalAlpha = "0.5";
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		this.context.globalAlpha = "1.0";
     }
 	
 }
@@ -184,11 +187,14 @@ function updateGameArea() {
     var highscore = localStorage.getItem("highscore");
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
+			myGameArea.clear();
             myGameArea.stop();
             mySound.play();
 			myGamePiece1.x = myGamePiece.x;
 			myGamePiece1.y = myGamePiece.y;
 			myGamePiece1.update();
+			myGamePiece.image.src = '';
+			myGamePiece.update();
             mySound1.stop();
             gameOver.text = "GAME OVER";
             restart.text = "PRESS 'R' TO RESTART";
