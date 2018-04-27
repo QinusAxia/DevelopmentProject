@@ -11,21 +11,23 @@ var gameOver;
 var restart;
 var myMute;
 var myUnmute;
+var mylife;
 
 /* To initalise the game component
 The speed of gamepiece is set to 1.
 The score gained is based on the gameframe.
  */
- 
+
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
-	myGamePiece1 = new component(70, 60, "images/Boom.png", 10, 0, "image");
+    myGamePiece1 = new component(70, 60, "images/Boom.png", 10, 0, "image");
     myBackground = new component(window.innerWidth - 10, window.innerHeight - 10, "images/bground1.jpg", 0, 0, "image");
-    myMute = new component(35, 35, "images/mute.png", 0, 0, "image"); 
-	myUnmute = new component(35, 35, "images/unmute.png", 40, 0, "image"); 
-	myGamePiece.gravity = 1;
+    myMute = new component(35, 35, "images/mute.png", 0, 0, "image");
+    myUnmute = new component(35, 35, "images/unmute.png", 40, 0, "image");
+    myGamePiece.gravity = 1;
     myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
     myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
+    mylife = new component("20px", "Consolas, sans serif", "black", 180, 100, "text");
     mySound = new sound("sounds/explosion.mp3");
     mySound1 = new sound("sounds/BGM.mp3");
     mySound2 = new sound("sounds/Accelerate.mp3");
@@ -47,28 +49,28 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 10);
-			
-		window.addEventListener('mousedown', function (e) {
+
+        window.addEventListener('mousedown', function (e) {
             myGameArea.x = e.pageX;
             myGameArea.y = e.pageY;
-        }) 
-        		
-		window.addEventListener('mouseup', function (e) {
-				myGameArea.x = false;
-				myGameArea.y = false;
-			})
-	
+        })
+
+        window.addEventListener('mouseup', function (e) {
+            myGameArea.x = false;
+            myGameArea.y = false;
+        })
+
     },
     stop: function () {
         clearInterval(this.interval);
     },
     clear: function () {
-		this.context.fillStyle = "white";
-		this.context.globalAlpha = "0.5";
+        this.context.fillStyle = "white";
+        this.context.globalAlpha = "0.5";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		this.context.globalAlpha = "1.0";
+        this.context.globalAlpha = "1.0";
     }
-	
+
 }
 
 function resize() { //source: http://cssdeck.com/labs/emcxdwuz
@@ -104,45 +106,45 @@ function component(width, height, color, x, y, type) {
     this.gravitySpeed = 0;
     //This function is use to check whether the type of context is an image or text data type, else return a fillRect.
     this.update = function () {
-            ctx = myGameArea.context;
-            if (type == "image") {
-                ctx.drawImage(this.image,
-                    this.x,
-                    this.y,
-                    this.width, this.height);
-            } else if (this.type == "text") {
-                ctx.font = this.width + " " + this.height;
-                ctx.fillStyle = color;
-                ctx.fillText(this.text, this.x, this.y);
-            } else {
-                ctx.fillStyle = color;
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-            }
+        ctx = myGameArea.context;
+        if (type == "image") {
+            ctx.drawImage(this.image,
+                this.x,
+                this.y,
+                this.width, this.height);
+        } else if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
         }
-        //This function sets default gravity speed to reach above or below for the object.
+    }
+    //This function sets default gravity speed to reach above or below for the object.
     this.newPos = function () {
-            this.gravitySpeed += this.gravity;
-            this.x += this.speedX;
-            this.y += this.speedY + this.gravitySpeed;
-            this.hitBottom();
-            this.hitTop();
-        }
-        //To prevent plane fly below the canvas.
+        this.gravitySpeed += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY + this.gravitySpeed;
+        this.hitBottom();
+        this.hitTop();
+    }
+    //To prevent plane fly below the canvas.
     this.hitBottom = function () {
-            var rockbottom = myGameArea.canvas.height - this.height;
-            if (this.y > rockbottom) {
-                this.y = rockbottom;
-            }
-            this.gravitySpeed = 0;
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom) {
+            this.y = rockbottom;
         }
-        //To prevent plane fly beyond the canvas.
+        this.gravitySpeed = 0;
+    }
+    //To prevent plane fly beyond the canvas.
     this.hitTop = function () {
-            var rocktop = 0;
-            if (this.y <= rocktop) {
-                this.y = rocktop;
-            }
+        var rocktop = 0;
+        if (this.y <= rocktop) {
+            this.y = rocktop;
         }
-        //To return a crash when object touches the obstacles
+    }
+    //To return a crash when object touches the obstacles
     this.crashWith = function (otherobj) {
         var myleft = this.x;
         var myright = this.x + (this.width);
@@ -158,15 +160,32 @@ function component(width, height, color, x, y, type) {
         }
         return crash;
     }
-	
-	 this.clicked = function() {
+    //this is the function to reduce the life when plane hits wall, status: needs fixing
+    this.HitLife = function (otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var hit = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            hit = false;
+        }
+        return hit;
+    }
+
+
+    this.clicked = function () {
         var myleft = this.x;
         var myright = this.x + (this.width);
         var mytop = this.y;
         var mybottom = this.y + (this.height);
         var clicked = true;
-        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y)
-         || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) ||
+            (myright < myGameArea.x) || (myleft > myGameArea.x)) {
             clicked = false;
         }
         return clicked;
@@ -185,16 +204,24 @@ function myFunction(event) {
 function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     var highscore = localStorage.getItem("highscore");
+    mylife.value = 30000;
+    //this loop reduces the life of plane each time it hits obstacle. Status: needs fixing
+    for (a = 0; a < myObstacles.length; a += 1) {
+        if (myGamePiece.HitLife(myObstacles[a]))
+            {
+                mylife.value = mylife.value-1;
+            }
+    }
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
-			myGameArea.clear();
+            myGameArea.clear();
             myGameArea.stop();
             mySound.play();
-			myGamePiece1.x = myGamePiece.x;
-			myGamePiece1.y = myGamePiece.y;
-			myGamePiece1.update();
-			myGamePiece.image.src = '';
-			myGamePiece.update();
+            myGamePiece1.x = myGamePiece.x;
+            myGamePiece1.y = myGamePiece.y;
+            myGamePiece1.update();
+            myGamePiece.image.src = '';
+            myGamePiece.update();
             mySound1.stop();
             gameOver.text = "GAME OVER";
             restart.text = "PRESS 'R' TO RESTART";
@@ -207,14 +234,14 @@ function updateGameArea() {
     myGameArea.clear();
     myGameArea.frameNo += 1;
     myBackground.update();
-	if (myGameArea.x && myGameArea.y) {
-		if(myMute.clicked()){
-			mySound1.stop();
-		}
-		if(myUnmute.clicked()){
-			mySound1.play();
-		}
-	}
+    if (myGameArea.x && myGameArea.y) {
+        if (myMute.clicked()) {
+            mySound1.stop();
+        }
+        if (myUnmute.clicked()) {
+            mySound1.play();
+        }
+    }
     //This is to create obstacles and set the height and gap for the obstacles.
     if (myGameArea.frameNo == 1 || everyinterval(200)) {
         x = myGameArea.canvas.width;
@@ -231,13 +258,14 @@ function updateGameArea() {
         myObstacles[i].x += -2;
         myObstacles[i].update();
     }
-	
-	myMute.update();
-	myUnmute.update();
+
+    myMute.update();
+    myUnmute.update();
     //The score gained is based on the frameNo.
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
     myHighScore.text = "HIGH SCORE: " + highscore;
+    mylife.text = "LIFE: " + mylife.value;
     // https://stackoverflow.com/questions/29370017/adding-a-high-score-to-local-storage
     //After go through game over screen, the highscore will store the highest value and display in the canvas.
     if (highscore != null) {
@@ -247,9 +275,8 @@ function updateGameArea() {
     } else {
         localStorage.setItem("highscore", myGameArea.frameNo);
     }
-	
-	
 
+    mylife.update()
     myHighScore.update();
     myGamePiece.newPos();
     myGamePiece.update();
@@ -284,7 +311,7 @@ function accelerate(n) {
     mySound2.play();
 }
 
-function mute(){
-	mySound1.stop();
-	
+function mute() {
+    mySound1.stop();
+
 }
