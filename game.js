@@ -1,4 +1,5 @@
 var myGamePiece;
+var myGamePiece1
 var myObstacles = [];
 var myBackground;
 var mySound;
@@ -15,8 +16,10 @@ var myUnmute;
 The speed of gamepiece is set to 1.
 The score gained is based on the gameframe.
  */
+ 
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
+	myGamePiece1 = new component(70, 60, "images/Boom.png", 10, 0, "image");
     myBackground = new component(window.innerWidth - 10, window.innerHeight - 10, "images/bground1.jpg", 0, 0, "image");
     myMute = new component(35, 35, "images/mute.png", 0, 0, "image"); 
 	myUnmute = new component(35, 35, "images/unmute.png", 40, 0, "image"); 
@@ -183,8 +186,10 @@ function updateGameArea() {
         if (myGamePiece.crashWith(myObstacles[i])) {
             myGameArea.stop();
             mySound.play();
+			myGamePiece1.x = myGamePiece.x;
+			myGamePiece1.y = myGamePiece.y;
+			myGamePiece1.update();
             mySound1.stop();
-            myGameArea.clear();
             gameOver.text = "GAME OVER";
             restart.text = "PRESS 'R' TO RESTART";
             restart.update();
