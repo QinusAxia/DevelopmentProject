@@ -1,5 +1,5 @@
 var myGamePiece;
-var myGamePiece1
+var myGamePiece1;
 var myObstacles = [];
 var myBackground;
 var mySound;
@@ -13,6 +13,8 @@ var myMute;
 var myUnmute;
 var myHP;
 var gameSpeed;
+var buttonArray= [false, false];
+var mousePressed = false;
 
 
 /* To initalise the game component
@@ -64,7 +66,6 @@ var myGameArea = {
             myGameArea.x = false;
             myGameArea.y = false;
         })
-
     },
     stop: function () {
         clearInterval(this.interval);
@@ -275,7 +276,7 @@ function updateGameArea() {
     myHP.text = "HP:" + myHP.value;
     gameSpeed.text = "Speed: " + gameSpeed.value;
     gameSpeed.update();
-    myHP.update()
+    myHP.update();
     // https://stackoverflow.com/questions/29370017/adding-a-high-score-to-local-storage
     //After go through game over screen, the highscore will store the highest value and display in the canvas.
     if (highscore != null) {
@@ -317,11 +318,15 @@ function everyinterval(n) {
 }
 
 function accelerate(n) {
-    myGamePiece.gravity = n;
-    mySound2.play();
+	var x = event.which || event.keyCode;
+	var y = event.which || event.mousePressed;
+    if (x == 32 || y == 1) {
+		myGamePiece.gravity = n;
+		mySound2.play();
+    }
 }
 
-function mute() {
+/* function mute() {
     mySound1.stop();
 
-}
+}*/
