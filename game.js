@@ -11,7 +11,9 @@ var gameOver;
 var restart;
 var myMute;
 var myUnmute;
-var mylife;
+var myHP;
+var gameSpeed;
+
 
 /* To initalise the game component
 The speed of gamepiece is set to 1.
@@ -25,9 +27,12 @@ function startGame() {
     myMute = new component(35, 35, "images/mute.png", 0, 0, "image");
     myUnmute = new component(35, 35, "images/unmute.png", 40, 0, "image");
     myGamePiece.gravity = 1;
+    gameSpeed = new component("30px", "Consolas, sans serif", "black", 500, 40, "text");
+    gameSpeed.value =10;
     myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
     myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
-    mylife = new component("20px", "Consolas, sans serif", "black", 180, 100, "text");
+    myHP = new component("20px", "Consolas, sans serif", "black", 180, 100, "text");
+    myHP.value =200;
     mySound = new sound("sounds/explosion.mp3");
     mySound1 = new sound("sounds/BGM.mp3");
     mySound2 = new sound("sounds/Accelerate.mp3");
@@ -48,7 +53,7 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
-        this.interval = setInterval(updateGameArea, 10);
+        this.interval = setInterval(updateGameArea, gameSpeed.value);
 
         window.addEventListener('mousedown', function (e) {
             myGameArea.x = e.pageX;
@@ -204,16 +209,15 @@ function myFunction(event) {
 function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     var highscore = localStorage.getItem("highscore");
-    mylife.value = 30000;
     //this loop reduces the life of plane each time it hits obstacle. Status: needs fixing
     for (a = 0; a < myObstacles.length; a += 1) {
         if (myGamePiece.HitLife(myObstacles[a]))
             {
-                mylife.value = mylife.value-1;
+                myHP.value = myHP.value-1;
             }
     }
     for (i = 0; i < myObstacles.length; i += 1) {
-        if (myGamePiece.crashWith(myObstacles[i])) {
+        if ((myGamePiece.crashWith(myObstacles[i])) && (myHP.value<=0)) {
             myGameArea.clear();
             myGameArea.stop();
             mySound.play();
@@ -237,6 +241,7 @@ function updateGameArea() {
     if (myGameArea.x && myGameArea.y) {
         if (myMute.clicked()) {
             mySound1.stop();
+            gameSpeed.value = 20;
         }
         if (myUnmute.clicked()) {
             mySound1.play();
@@ -265,7 +270,10 @@ function updateGameArea() {
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
     myHighScore.text = "HIGH SCORE: " + highscore;
-    mylife.text = "LIFE: " + mylife.value;
+    myHP.text = "LIFE: " + myHP.value;
+    gameSpeed.text = "Speed: " + gameSpeed.value;
+    gameSpeed.update();
+    myHP.update()
     // https://stackoverflow.com/questions/29370017/adding-a-high-score-to-local-storage
     //After go through game over screen, the highscore will store the highest value and display in the canvas.
     if (highscore != null) {
@@ -275,11 +283,11 @@ function updateGameArea() {
     } else {
         localStorage.setItem("highscore", myGameArea.frameNo);
     }
-
-    mylife.update()
+    
     myHighScore.update();
     myGamePiece.newPos();
     myGamePiece.update();
+    
 }
 
 //This function is to initialise the sound effect.
