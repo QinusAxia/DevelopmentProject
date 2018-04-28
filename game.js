@@ -21,7 +21,7 @@ The score gained is based on the gameframe.
  */
 
 function startGame() {
-    myGamePiece = new component(45, 35, "images/plane1.png", 10, 0, "image");
+    myGamePiece = new component(45, 35, "images/plane1.png", 100, window.innerHeight/3, "image");
     myGamePiece1 = new component(70, 60, "images/Boom.png", 10, 0, "image");
     myBackground = new component(window.innerWidth - 10, window.innerHeight - 10, "images/bground1.jpg", 0, 0, "image");
     myMute = new component(35, 35, "images/mute.png", 0, 0, "image");
@@ -31,7 +31,7 @@ function startGame() {
     gameSpeed.value =10;
     myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
     myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
-    myHP = new component("20px", "Consolas, sans serif", "black", 180, 100, "text");
+    myHP = new component("20px", "Consolas, sans serif", "black", myGamePiece.x, myGamePiece.y, "text");
     myHP.value =200;
     mySound = new sound("sounds/explosion.mp3");
     mySound1 = new sound("sounds/BGM.mp3");
@@ -217,6 +217,8 @@ function updateGameArea() {
             }
     }
     for (i = 0; i < myObstacles.length; i += 1) {
+            myHP.x=myGamePiece1.x+80;
+            myHP.y =myGamePiece.y - 10;
         if ((myGamePiece.crashWith(myObstacles[i])) && (myHP.value<=0)) {
             myGameArea.clear();
             myGameArea.stop();
@@ -270,7 +272,7 @@ function updateGameArea() {
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
     myHighScore.text = "HIGH SCORE: " + highscore;
-    myHP.text = "LIFE: " + myHP.value;
+    myHP.text = "HP:" + myHP.value;
     gameSpeed.text = "Speed: " + gameSpeed.value;
     gameSpeed.update();
     myHP.update()
