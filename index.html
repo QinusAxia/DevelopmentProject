@@ -3,6 +3,10 @@
     <title>Flappy Plan | Development Project 1</title>
 
 <head>
+<script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -12,12 +16,23 @@
 	<script src="game.js"></script>
 </head>
 
-<body onload="startGame()" class="text-center" onkeydown="accelerate(-2)" onkeyup="accelerate(2)" onkeypress="myFunction(event)" onmousedown="accelerate(-2)" onmouseup="accelerate(2)">
+<body class="text-center" onkeydown="accelerate(-2)" onkeyup="accelerate(2)" onkeypress="myFunction(event)" onmousedown="accelerate(-2)" onmouseup="accelerate(2)">
     <script src="game.js"></script>
 	<!-- <img src = "images/mute.png" onclick = "mute()" width = "35px" height = "35px" padding = "0"/> -->
 <!--    <br>
     <p>Click the aeroplane to stay in the air</p>
     <p>How long can you stay alive?</p>-->
 </body>
+
+<div class="modal fade" id="myModal" role="dialog" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+	
+		<div class="modal-content">
+			<div class="modal-body">
+				<button class="btn btn-success btn-lg" onclick="startGame()" data-dismiss="modal">START</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 </html>

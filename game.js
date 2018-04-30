@@ -13,14 +13,17 @@ var myMute;
 var myUnmute;
 var myHP;
 var gameSpeed;
-var buttonArray= [false, false];
-var mousePressed = false;
 
 
 /* To initalise the game component
 The speed of gamepiece is set to 1.
 The score gained is based on the gameframe.
  */
+ 
+ // This code will show the modal on page load
+$(window).on('load',function(){
+        $('#myModal').modal('show');
+    });
 
 function startGame() {
     myGamePiece = new component(45, 35, "images/plane1.png", 100, window.innerHeight/3, "image");
