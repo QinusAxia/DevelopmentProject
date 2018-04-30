@@ -32,6 +32,8 @@ function startGame() {
     myBackground = new component(window.innerWidth - 10, window.innerHeight - 10, "images/bground1.jpg", 0, 0, "image");
     myMute = new component(35, 35, "images/mute.png", 0, 0, "image");
     myUnmute = new component(35, 35, "images/unmute.png", 40, 0, "image");
+    speedup = new component(50,50, "images/Speedup.png", 0,40, "image");
+    slowdown = new component(50, 50, "images/Slowdown.png", 65, 40, "image");
     myGamePiece.gravity = 1;
     gameSpeed = new component("30px", "Consolas, sans serif", "black", 500, 40, "text");
     gameSpeed.value =10;
@@ -253,7 +255,16 @@ function updateGameArea() {
         if (myUnmute.clicked()) {
             mySound1.play();
         }
+        if (speedup.clicked()){
+            gameSpeed.value = gameSpeed.value - 1;
+        }
+        if (slowdown.clicked()){
+            gameSpeed.value = gameSpeed.value + 1;
+        }
     }
+    
+   
+    
     //This is to create obstacles and set the height and gap for the obstacles.
     if (myGameArea.frameNo == 1 || everyinterval(200)) {
         x = myGameArea.canvas.width;
@@ -273,6 +284,8 @@ function updateGameArea() {
 
     myMute.update();
     myUnmute.update();
+    speedup.update();
+    slowdown.update();
     //The score gained is based on the frameNo.
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
