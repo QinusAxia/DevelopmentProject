@@ -320,12 +320,12 @@ function everyinterval(n) {
     return false;
 }
 
-function accelerate(n) {
-	var x = event.which || event.keyCode;
-	var y = event.which || event.mousePressed;
+function accelerate(n, event) {
+    var x = event.which || event.keyCode;
+    var y = event.which || event.mousePressed;
     if (x == 32 || y == 1) {
-		myGamePiece.gravity = n;
-		mySound2.play();
+        myGamePiece.gravity = n;
+        mySound2.play();
     }
 }
 
