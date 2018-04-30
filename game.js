@@ -5,15 +5,16 @@ var myBackground;
 var mySound;
 var mySound1;
 var mySound2;
-var myScore;
-var myHighScore;
-var gameOver;
-var restart;
-var myMute;
-var myUnmute;
-var myHP;
-var gameSpeed;
-
+var myScore;//stores current score based on framerate
+var myHighScore; //stores highscore value
+var gameOver;//text
+var restart;//text
+var myMute;//an image button, click to mute bgmusic
+var myUnmute;//an image button, click to unmute bgmusic
+var myHP;//this variable holds the health value of the plane
+var gameSpeed;//this variable holds the speed of the game
+var speedup;//this will be an image where users can click to speed up the game
+var slowdown;//this will be an image where users can click to slow down the game speed
 
 /* To initalise the game component
 The speed of gamepiece is set to 1.
@@ -58,6 +59,7 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
+         //this determines the speed of the game, the lower the value the faster (gameSpeed.value): 
         this.interval = setInterval(updateGameArea, gameSpeed.value);
 
         window.addEventListener('mousedown', function (e) {
@@ -247,7 +249,6 @@ function updateGameArea() {
     if (myGameArea.x && myGameArea.y) {
         if (myMute.clicked()) {
             mySound1.stop();
-            gameSpeed.value = 20;
         }
         if (myUnmute.clicked()) {
             mySound1.play();
