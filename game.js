@@ -62,7 +62,7 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
          //this determines the speed of the game, the lower the value the faster (gameSpeed.value): 
-        this.interval = setInterval(updateGameArea, gameSpeed.value, myScore);
+        this.interval = setInterval(updateGameArea, gameSpeed.value);
 
         window.addEventListener('mousedown', function (e) {
             myGameArea.x = e.pageX;
@@ -79,7 +79,7 @@ var myGameArea = {
     },
     clear: function () {
         this.context.fillStyle = "white";
-        this.context.globalAlpha = "0.5";
+        this.context.globalAlpha = "0.05";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.globalAlpha = "1.0";
     }
@@ -283,16 +283,17 @@ function updateGameArea() {
         if (myUnmute.clicked()) {
             mySound1.play();
         }
-   /*     if (speedup.clicked()){
-        } */
+        if (speedup.clicked()){
+			clearInterval(this.interval);
+			this.interval = setInterval(updateGameArea, -(gameSpeed.value));
+			gameSpeed.value++;
+        } 
         if (slowdown.clicked()){
-            this.interval = setInterval(myScore,gameSpeed.value + 1);
-            gameSpeed.value += 1;
+			clearInterval(this.interval);
+            this.interval = setInterval(updateGameArea, -(gameSpeed.value));
+			gameSpeed.value--;
         }
     }
-    
-   
-    
     //This is to create obstacles and set the height and gap for the obstacles.
     if (myGameArea.frameNo == 1 || everyinterval(200)) {
         x = myGameArea.canvas.width;
