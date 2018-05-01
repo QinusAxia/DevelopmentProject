@@ -36,7 +36,7 @@ function startGame() {
     slowdown = new component(50, 50, "images/Slowdown.png", 65, 40, "image");
     myGamePiece.gravity = 1;
     gameSpeed = new component("30px", "Consolas, sans serif", "black", 500, 40, "text");
-    gameSpeed.value =10;
+    gameSpeed.value = 10;
     myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
     myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
     myHP = new component("20px", "Consolas, sans serif", "black", myGamePiece.x, myGamePiece.y, "text");
@@ -62,7 +62,7 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
          //this determines the speed of the game, the lower the value the faster (gameSpeed.value): 
-        this.interval = setInterval(updateGameArea, gameSpeed.value);
+        this.interval = setInterval(updateGameArea, gameSpeed.value, myScore);
 
         window.addEventListener('mousedown', function (e) {
             myGameArea.x = e.pageX;
@@ -255,11 +255,11 @@ function updateGameArea() {
         if (myUnmute.clicked()) {
             mySound1.play();
         }
-        if (speedup.clicked()){
-            gameSpeed.value = gameSpeed.value - 1;
-        }
+   /*     if (speedup.clicked()){
+        } */
         if (slowdown.clicked()){
-            gameSpeed.value = gameSpeed.value + 1;
+            this.interval = setInterval(myScore,gameSpeed.value + 1);
+            gameSpeed.value += 1;
         }
     }
     
