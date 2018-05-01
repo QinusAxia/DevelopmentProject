@@ -147,6 +147,20 @@ function component(width, height, color, x, y, type) {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
             this.y = rockbottom;
+			myGameArea.clear();
+            myGameArea.stop();
+            mySound.play();
+            myGamePiece1.x = myGamePiece.x;
+            myGamePiece1.y = myGamePiece.y;
+            myGamePiece1.update();
+            myGamePiece.image.src = '';
+            myGamePiece.update();
+            mySound1.stop();
+            gameOver.text = "GAME OVER";
+            restart.text = "PRESS 'R' TO RESTART";
+            restart.update();
+            gameOver.update();
+            myFunction(Event);
         }
         this.gravitySpeed = 0;
     }
@@ -155,6 +169,20 @@ function component(width, height, color, x, y, type) {
         var rocktop = 0;
         if (this.y <= rocktop) {
             this.y = rocktop;
+			myGameArea.clear();
+            myGameArea.stop();
+            mySound.play();
+            myGamePiece1.x = myGamePiece.x;
+            myGamePiece1.y = myGamePiece.y;
+            myGamePiece1.update();
+            myGamePiece.image.src = '';
+            myGamePiece.update();
+            mySound1.stop();
+            gameOver.text = "GAME OVER";
+            restart.text = "PRESS 'R' TO RESTART";
+            restart.update();
+            gameOver.update();
+            myFunction(Event);
         }
     }
     //To return a crash when object touches the obstacles
@@ -332,6 +360,10 @@ function everyinterval(n) {
         return true;
     }
     return false;
+}
+
+function clearConsole() {
+    console.clear();
 }
 
 function accelerate(n, event) {

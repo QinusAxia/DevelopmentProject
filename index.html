@@ -31,9 +31,36 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<button class="btn btn-success btn-lg" onclick="startGame()" data-dismiss="modal">START</button>
+				<button class="btn btn-info btn-lg" data-toggle="modal" data-target="#instructions">Instructions</button>
 			</div>
 		</div>
 	</div>
+</div>
+
+ <div class="modal fade" id="instructions" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Instructions</h4>
+      </div>
+      <div class="modal-body">
+          <p>
+          <p>1. Press spacebar or mouse click to elevate plane</p>
+          <p>2. Aim is to avoid hitting the bottom, top and barriers for as long as possible</p>
+          <p>3. Click "Faster" button to speedup the game</p>
+          <p>4. Click "Slower" button to slowdown the game</p>
+          <p>5. Each time you hit the obstacle, health reduces. You start with 200 HP</p>
+          <p>6. When your health hits 1, and you hit an obstacle the plane crashes and gameover</p>
+          <p>HAVE FUN</p>
+          </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 </html>
