@@ -199,8 +199,16 @@ function component(width, height, color, x, y, type) {
         if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
             crash = false;
         }
+        if (!((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright))) {
+            confirmHit();
+        }
         return crash;
     }
+    function confirmHit()
+    {
+        alert("Plane has hit an obstacle");
+    }
+    
     //this is the function to reduce the life when plane hits wall, status: needs fixing
     this.HitLife = function (otherobj) {
         var myleft = this.x;
