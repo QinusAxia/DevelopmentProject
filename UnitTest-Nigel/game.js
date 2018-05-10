@@ -288,12 +288,14 @@ function updateGameArea() {
 			this.interval = setInterval(updateGameArea, -(gameSpeed.value));
 			gameSpeed.value++;
 			clearInterval(this.interval);
+			console.log("The speed increased to" + gameSpeed.value);
         } 
         if (slowdown.clicked()){
 			clearInterval(this.interval);
             this.interval = setInterval(updateGameArea, -(gameSpeed.value));
 			gameSpeed.value--;
 			clearInterval(this.interval);
+			console.log("The speed decreased to" + gameSpeed.value);
         }
     }
     //This is to create obstacles and set the height and gap for the obstacles.
@@ -377,8 +379,3 @@ function accelerate(n, event) {
         mySound2.play();
     }
 }
-
-/* function mute() {
-    mySound1.stop();
-
-}*/
