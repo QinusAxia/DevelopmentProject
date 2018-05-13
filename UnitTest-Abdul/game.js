@@ -73,6 +73,7 @@ var myGameArea = {
             myGameArea.x = false;
             myGameArea.y = false;
         })
+		alert("The game started.");
     },
     stop: function () {
         clearInterval(this.interval);
@@ -376,6 +377,7 @@ function accelerate(n, event) {
         myGamePiece.gravity = n;
         mySound2.play();
     }
+	console.log("The plane has risen");
 }
 
 /* function mute() {
