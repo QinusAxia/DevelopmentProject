@@ -82,6 +82,8 @@ var myGameArea = {
         this.context.globalAlpha = "0.05";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.globalAlpha = "1.0";
+        console.log("clear function");
+        //test clear function
     }
 
 }
@@ -153,6 +155,8 @@ function component(width, height, color, x, y, type) {
             myGamePiece1.x = myGamePiece.x;
             myGamePiece1.y = myGamePiece.y;
             myGamePiece1.update();
+            alert("You have crashed");
+            //crash function test
             myGamePiece.image.src = '';
             myGamePiece.update();
             mySound1.stop();
@@ -279,9 +283,13 @@ function updateGameArea() {
     if (myGameArea.x && myGameArea.y) {
         if (myMute.clicked()) {
             mySound1.stop();
+            alert("Music is muted");
+            //test mute music
         }
         if (myUnmute.clicked()) {
             mySound1.play();
+            alert("Music is unmuted");
+            //test unmuted music
         }
         if (speedup.clicked()){
 			clearInterval(this.interval);
