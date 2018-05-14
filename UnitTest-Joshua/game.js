@@ -5,34 +5,34 @@ var myBackground;
 var mySound;
 var mySound1;
 var mySound2;
-var myScore;//stores current score based on framerate
+var myScore; //stores current score based on framerate
 var myHighScore; //stores highscore value
-var gameOver;//text
-var restart;//text
-var myMute;//an image button, click to mute bgmusic
-var myUnmute;//an image button, click to unmute bgmusic
-var myHP;//this variable holds the health value of the plane
-var gameSpeed;//this variable holds the speed of the game
-var speedup;//this will be an image where users can click to speed up the game
-var slowdown;//this will be an image where users can click to slow down the game speed
+var gameOver; //text
+var restart; //text
+var myMute; //an image button, click to mute bgmusic
+var myUnmute; //an image button, click to unmute bgmusic
+var myHP; //this variable holds the health value of the plane
+var gameSpeed; //this variable holds the speed of the game
+var speedup; //this will be an image where users can click to speed up the game
+var slowdown; //this will be an image where users can click to slow down the game speed
 
 /* To initalise the game component
 The speed of gamepiece is set to 1.
 The score gained is based on the gameframe.
  */
- 
- // This code will show the modal on page load
-$(window).on('load',function(){
-        $('#myModal').modal('show');
-    });
+
+// This code will show the modal on page load
+$(window).on('load', function () {
+    $('#myModal').modal('show');
+});
 
 function startGame() {
-    myGamePiece = new component(45, 35, "images/plane1.png", 100, window.innerHeight/3, "image");
+    myGamePiece = new component(45, 35, "images/plane1.png", 100, window.innerHeight / 3, "image");
     myGamePiece1 = new component(70, 60, "images/Boom.png", 10, 0, "image");
     myBackground = new component(window.innerWidth - 10, window.innerHeight - 10, "images/bground1.jpg", 0, 0, "image");
     myMute = new component(35, 35, "images/mute.png", 0, 0, "image");
     myUnmute = new component(35, 35, "images/unmute.png", 40, 0, "image");
-    speedup = new component(50,50, "images/Speedup.png", 0,40, "image");
+    speedup = new component(50, 50, "images/Speedup.png", 0, 40, "image");
     slowdown = new component(50, 50, "images/Slowdown.png", 65, 40, "image");
     myGamePiece.gravity = 1;
     gameSpeed = new component("30px", "Consolas, sans serif", "black", 500, 40, "text");
@@ -40,7 +40,7 @@ function startGame() {
     myScore = new component("30px", "Consolas, sans serif", "black", 180, 40, "text");
     myHighScore = new component("30px", "Consolas, sans serif", "black", 180, 80, "text");
     myHP = new component("20px", "Consolas, sans serif", "black", myGamePiece.x, myGamePiece.y, "text");
-    myHP.value =200;
+    myHP.value = 200;
     mySound = new sound("sounds/explosion.mp3");
     mySound1 = new sound("sounds/BGM.mp3");
     mySound2 = new sound("sounds/Accelerate.mp3");
@@ -61,7 +61,7 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
-         //this determines the speed of the game, the lower the value the faster (gameSpeed.value): 
+        //this determines the speed of the game, the lower the value the faster (gameSpeed.value): 
         this.interval = setInterval(updateGameArea, gameSpeed.value);
 
         window.addEventListener('mousedown', function (e) {
@@ -97,6 +97,7 @@ function resize() { //source: http://cssdeck.com/labs/emcxdwuz
 
     myGameArea.canvas.style.width = width + 'px';
     myGameArea.canvas.style.height = height + 'px';
+    alert("Game area has resized");
 }
 window.addEventListener('resize', resize, false);
 
@@ -147,7 +148,7 @@ function component(width, height, color, x, y, type) {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
             this.y = rockbottom;
-			myGameArea.clear();
+            myGameArea.clear();
             myGameArea.stop();
             mySound.play();
             myGamePiece1.x = myGamePiece.x;
@@ -169,7 +170,7 @@ function component(width, height, color, x, y, type) {
         var rocktop = 0;
         if (this.y <= rocktop) {
             this.y = rocktop;
-			myGameArea.clear();
+            myGameArea.clear();
             myGameArea.stop();
             mySound.play();
             myGamePiece1.x = myGamePiece.x;
@@ -199,16 +200,15 @@ function component(width, height, color, x, y, type) {
         if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
             crash = false;
         }
-        if (!((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright))) {
-            confirmHit();
-        }
+        confirmHit(crash);        
         return crash;
     }
-    function confirmHit()
-    {
+
+    function confirmHit(Boolean) {
+        if (Boolean)
         alert("Plane has hit an obstacle");
     }
-    
+
     //this is the function to reduce the life when plane hits wall, status: needs fixing
     this.HitLife = function (otherobj) {
         var myleft = this.x;
@@ -255,15 +255,14 @@ function updateGameArea() {
     var highscore = localStorage.getItem("highscore");
     //this loop reduces the life of plane each time it hits obstacle. Status: needs fixing
     for (a = 0; a < myObstacles.length; a += 1) {
-        if (myGamePiece.HitLife(myObstacles[a]))
-            {
-                myHP.value = myHP.value-1;
-            }
+        if (myGamePiece.HitLife(myObstacles[a])) {
+            myHP.value = myHP.value - 1;
+        }
     }
     for (i = 0; i < myObstacles.length; i += 1) {
-            myHP.x=myGamePiece1.x+80;
-            myHP.y =myGamePiece.y - 10;
-        if ((myGamePiece.crashWith(myObstacles[i])) && (myHP.value<=0)) {
+        myHP.x = myGamePiece1.x + 80;
+        myHP.y = myGamePiece.y - 10;
+        if ((myGamePiece.crashWith(myObstacles[i])) && (myHP.value <= 0)) {
             myGameArea.clear();
             myGameArea.stop();
             mySound.play();
@@ -291,17 +290,19 @@ function updateGameArea() {
         if (myUnmute.clicked()) {
             mySound1.play();
         }
-        if (speedup.clicked()){
-			clearInterval(this.interval);
-			this.interval = setInterval(updateGameArea, -(gameSpeed.value));
-			gameSpeed.value++;
-			clearInterval(this.interval);
-        } 
-        if (slowdown.clicked()){
-			clearInterval(this.interval);
+        if (speedup.clicked()) {
+            // window.alert("Speed inceased");
+            console.log("Game increased to: " + gameSpeed.value); //test code
+            clearInterval(this.interval);
             this.interval = setInterval(updateGameArea, -(gameSpeed.value));
-			gameSpeed.value--;
-			clearInterval(this.interval);
+            gameSpeed.value += 0.1;
+        }
+        if (slowdown.clicked()) {
+            //window.alert("Speed decreased");
+            console.log("Game slowed down to: " + gameSpeed.value); //test code
+            clearInterval(this.interval);
+            this.interval = setInterval(updateGameArea, -(gameSpeed.value));
+            gameSpeed.value -= 1;
         }
     }
     //This is to create obstacles and set the height and gap for the obstacles.
@@ -342,11 +343,11 @@ function updateGameArea() {
     } else {
         localStorage.setItem("highscore", myGameArea.frameNo);
     }
-    
+
     myHighScore.update();
     myGamePiece.newPos();
     myGamePiece.update();
-    
+
 }
 
 //This function is to initialise the sound effect.
