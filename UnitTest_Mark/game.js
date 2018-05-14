@@ -76,6 +76,7 @@ var myGameArea = {
     },
     stop: function () {
         clearInterval(this.interval);
+        alert("Game stopped");
     },
     clear: function () {
         this.context.fillStyle = "white";
@@ -279,9 +280,11 @@ function updateGameArea() {
     if (myGameArea.x && myGameArea.y) {
         if (myMute.clicked()) {
             mySound1.stop();
+            console.log("Mute Button Clicked!");
         }
         if (myUnmute.clicked()) {
             mySound1.play();
+            console.log("Unmute Button Clicked!");
         }
         if (speedup.clicked()){
 			clearInterval(this.interval);
@@ -358,6 +361,7 @@ function sound(src) {
 
 function everyinterval(n) {
     if ((myGameArea.frameNo / n) % 1 == 0) {
+        console.log("Interval tested");
         return true;
     }
     return false;
