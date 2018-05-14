@@ -97,10 +97,13 @@ function resize() { //source: http://cssdeck.com/labs/emcxdwuz
 
     myGameArea.canvas.style.width = width + 'px';
     myGameArea.canvas.style.height = height + 'px';
-    alert("Game area has resized");
+    resizeAlert();
 }
 window.addEventListener('resize', resize, false);
-
+function resizeAlert()
+{
+    alert("Game area has resized"); //testcode
+}
 
 /* This function is used to create object.*/
 function component(width, height, color, x, y, type) {
@@ -292,17 +295,23 @@ function updateGameArea() {
         }
         if (speedup.clicked()) {
             // window.alert("Speed inceased");
-            console.log("Game increased to: " + gameSpeed.value); //test code
+            logSpeed(true); //function test call
             clearInterval(this.interval);
             this.interval = setInterval(updateGameArea, -(gameSpeed.value));
-            gameSpeed.value += 0.1;
+            gameSpeed.value += 0.5;
         }
         if (slowdown.clicked()) {
             //window.alert("Speed decreased");
-            console.log("Game slowed down to: " + gameSpeed.value); //test code
+            logSpeed(false); //function test call
             clearInterval(this.interval);
             this.interval = setInterval(updateGameArea, -(gameSpeed.value));
-            gameSpeed.value -= 1;
+            gameSpeed.value -= 0.5;
+        }
+        function logSpeed(Boolean){
+            if (Boolean)
+                console.log("Game increased to: " + gameSpeed.value); //test code
+            else
+                console.log("Game slowed down to: " + gameSpeed.value); //test code    
         }
     }
     //This is to create obstacles and set the height and gap for the obstacles.
