@@ -82,7 +82,7 @@ var myGameArea = {
         this.context.globalAlpha = "0.05";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.globalAlpha = "1.0";
-        console.log("clear function");
+        console.log("clear function testing");
         //test clear function
     }
 
@@ -283,13 +283,10 @@ function updateGameArea() {
     if (myGameArea.x && myGameArea.y) {
         if (myMute.clicked()) {
             mySound1.stop();
-            alert("Music is muted");
-            //test mute music
         }
         if (myUnmute.clicked()) {
             mySound1.play();
-            alert("Music is unmuted");
-            //test unmuted music
+            
         }
         if (speedup.clicked()){
 			clearInterval(this.interval);
@@ -357,9 +354,11 @@ function sound(src) {
     document.body.appendChild(this.sound);
     this.play = function () {
         this.sound.play();
+        console.log("Sound is played now.");
     }
     this.stop = function () {
         this.sound.pause();
+        console.log("Sound is stopped now.");
     }
 
 }
