@@ -20,7 +20,7 @@ var slowdown;//this will be an image where users can click to slow down the game
 The speed of gamepiece is set to 1.
 The score gained is based on the gameframe.
  */
- 
+ //
  // This code will show the modal on page load
 $(window).on('load',function(){
         $('#myModal').modal('show');
